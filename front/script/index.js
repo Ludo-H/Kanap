@@ -37,12 +37,6 @@ function productsDisplay() {
 
 
 
-// <a href="./product.html?id=42">
-
-
-
-
-
 
 
 
