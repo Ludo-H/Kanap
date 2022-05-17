@@ -32,19 +32,8 @@ function productsDisplay() {
             </article>
         </a>
         `
-        )
-}
-
-
-
-
-
-
-
-
-//-------------
-// OBJETS
-//-------------
+        );
+};
 
 
 

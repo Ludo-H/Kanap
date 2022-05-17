@@ -10,7 +10,9 @@ const title = document.getElementById("title");
 const price = document.getElementById("price");
 const description = document.getElementById("description");
 const colors = document.getElementById("colors");
+const addToCart = document.getElementById("addToCart");
 let dataProduct = [];
+
 
 //-------------
 // FONCTIONS
@@ -39,15 +41,23 @@ function productDisplay() {
         baliseOption.value = `${color}`;
         colors.appendChild(baliseOption);
     });
-}
-
-
-//-------------
-// OBJETS
-//-------------
-
+};
 
 
 //-------------
 // EVENEMENTS
 //-------------
+addToCart.addEventListener("click", ()=>{
+    let tabProduct = JSON.parse(localStorage.getItem("product"));
+
+    const addColorQuantity = Object.assign({}, dataProduct, {
+        color: `${colors.value}`,
+        quantity: Number(`${quantity.value}`)
+    });
+
+    if(tabProduct == null){
+        tabProduct = [];
+        tabProduct.push(addColorQuantity);
+        localStorage.setItem("product", JSON.stringify(tabProduct));
+    };
+});
