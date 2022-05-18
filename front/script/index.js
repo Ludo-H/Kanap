@@ -1,7 +1,11 @@
 //-------------
 // VARIABLES
 //-------------
+
+// Variables dans lesquelles on va ajouter du contenu
 const itemsSection = document.getElementById("items");
+
+// Tableau qui va contenir data des produits du fetch
 let dataProducts = [];
 
 
@@ -22,6 +26,8 @@ fetchProducts();
 // Fonction d'affichage des produits
 function productsDisplay() {
     itemsSection.innerHTML = dataProducts
+
+        // méthode .map pour créé du contenu à chaque objet (product)
         .map((product) => 
         `
         <a href="./product.html?id=${product._id}">
@@ -32,7 +38,10 @@ function productsDisplay() {
             </article>
         </a>
         `
-        );
+        )
+
+        // on enleve les virgules qui séparent les objets
+        .join("");
 };
 
 
