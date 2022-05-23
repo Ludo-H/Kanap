@@ -7,7 +7,7 @@
 // Contenu du LS
 let localStorageContains = JSON.parse(localStorage.getItem("basket"));
 
-// Pour afficher ou non le formulaire
+// Pour afficher ou non le formulaire selon si le panier existe
 let formDiv = document.querySelector(".cart__order");
 
 if(localStorageContains == null || localStorageContains.length == 0){
@@ -44,6 +44,7 @@ let section = document.getElementById("cart__items");
 function basketDisplay() {
     if(localStorageContains != null){
         localStorageContains.forEach(product => {
+
         // Article qui contient tout
         let article = document.createElement("article");
         article.classList.add("cart__item");
@@ -136,6 +137,7 @@ basketDisplay();
 // Fonction pour récupérer le total des articles
 function getNumberProduct() {
     if(localStorageContains != null){
+    // On déclare une variable à 0 pour pouvoir y ajouter des nombres et retourner sa valeur à la fin
     let number = 0;
     for (let product of localStorageContains){
         number += product.quantity;
@@ -152,6 +154,7 @@ function getNumberProduct() {
 // Fonction pour récupérer le prix total
 function getTotalPrice() {
     if(localStorageContains != null){
+    // Même principe que le total des articles
     let total = 0;
     for (let product of localStorageContains){
         total += (product.dataProduct.price * product.quantity);
@@ -170,14 +173,14 @@ function getTotalPrice() {
 
 
 //*******************************************************************
-// On récupère les div du boutton supprimer
+// On récupère les para du boutton supprimer
 let paraDelete = document.querySelectorAll(".deleteItem");
 
 // On créé une boucle pour passer sur tous les bouttons
 for(let i = 0; i < paraDelete.length; i++){
     // Evenement sur chaque boutton
     paraDelete[i].addEventListener("click", ()=>{
-        // On fait un contre filtre pour récupérer ceux qui ne correspondent pas
+        // On fait un contre filtre pour récupérer ceux qui ne correspondent pas, l'autre en question est supprimé
         localStorageContains = localStorageContains.filter(element => element.id != paraDelete[i].id || element.color != paraDelete[i].dataset.color);
 
         // On renvoi les données actuelles dans le LS
@@ -196,7 +199,7 @@ for(let i = 0; i < paraDelete.length; i++){
 // On récupère les input qui gèrent la quantité
 let inputQuantity = document.querySelectorAll(".itemQuantity");
 
-// On récupère le para qui affiche la quantité
+// On récupère les para qui affiche la quantité
 let paraQuantity = document.querySelectorAll(".infoQuantity");
 
 // On créé une boucle pour passer sur tous les input

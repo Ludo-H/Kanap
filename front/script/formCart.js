@@ -4,8 +4,13 @@
 
 
 //*******************************************************************
+// Variable de l'input correspondant
 let firstName       = document.getElementById("firstName");
+
+// Para message de l'input
 let errorFirstName  = document.getElementById("firstNameErrorMsg");
+
+// Variable qui contient la regex de l'input
 let firstNameRegex  = new RegExp(/^[A-Za-zéèê]{3,20}$/);  
 //*******************************************************************
 
@@ -62,14 +67,14 @@ let order           = document.getElementById("order");
 
 
 //*******************************************************************
-// La fonction recupère un parametre auquel on va récupérer sa .value (texte rentré), et le comparer avec sa regex déclarée plus haut. Le taxte en dessous de l'input varie selon le résultat et renvoi une valeur booleenne pour l'exploiter plus tard
+// La fonction recupère un parametre auquel on va récupérer sa .value (texte rentré), et le comparer avec sa regex déclarée plus haut. Le texte en dessous de l'input varie selon le résultat et renvoi une valeur booleenne pour l'exploiter plus tard
 function checkFirstName(element) {
     if(firstNameRegex.test(element.value)){
         errorFirstName.textContent = "Prénom valide";
         return true;
      }else{
-         errorFirstName.textContent = "Prénom invalide : 3-20 caractères, pas de chiffre, pas de caractère spécial";
-         return false;
+        errorFirstName.textContent = "Prénom invalide : 3-20 caractères, pas de chiffre, pas de caractère spécial";
+        return false;
      };
 }
 //*******************************************************************
@@ -98,8 +103,8 @@ function checkAdress(element) {
         errorAdress.textContent = "Adresse valide";
         return true;
      }else{
-         errorAdress.textContent = "Veuillez préciser l'adresse";
-         return false;
+        errorAdress.textContent = "Veuillez préciser l'adresse";
+        return false;
      };
 }
 //*******************************************************************
@@ -113,8 +118,8 @@ function checkCity(element) {
         errorCity.textContent = "Ville valide";
         return true;
      }else{
-         errorCity.textContent = "Veuillez préciser une ville";
-         return false;
+        errorCity.textContent = "Veuillez préciser une ville";
+        return false;
      };
 }
 //*******************************************************************
@@ -128,8 +133,8 @@ function checkEmail(element) {
         errorEmail.textContent = "Email valide";
         return true;
      }else{
-         errorEmail.textContent = "Email Invalide";
-         return false;
+        errorEmail.textContent = "Email Invalide";
+        return false;
      };
 }
 //*******************************************************************
@@ -146,7 +151,7 @@ function checkEmail(element) {
 // Evenement sur l'input prénom
 firstName.addEventListener("change", function(){
 
-    // This fait référence à firstname
+    // This fait référence à firstname, on va donc avoir true ou false (voir fonction plus haut)
     checkFirstName(this);
 });
 //*******************************************************************
@@ -194,22 +199,20 @@ email.addEventListener("change", function(){
 
 
 
+//*******************************************************************
+// On écoute la validation du formulaire
+form.addEventListener("submit", ()=>{
 
-
-
-
-
-
-
-form.addEventListener("submit", (e)=>{
-    e.preventDefault();
+    // Les valeurs true et false retournées sont importantes à ce niveau, la condition est valide uniquement si false n'apparait pas
     if(checkFirstName(firstName) && checkLastName(lastName) && checkAdress(adress) && checkCity(city) && checkEmail(email)){
 
+        // Le tableau qui va contenir les id des produits
         let idProductsTab = [];
         for(let i = 0; i < localStorageContains.length; i++){
             idProductsTab.push(localStorageContains[i].id)
         }
 
+        // L'objet contenant les renseignements de l'utilisateur
         const userForm = {
             firstName : firstName.value,
             lastName : lastName.value,
@@ -218,13 +221,16 @@ form.addEventListener("submit", (e)=>{
             email : email.value
         };
         
+        // L'objet contenant les renseignements attendus par le server
         const contactAndProducts = {
             contact : userForm,
             products : idProductsTab
         };
 
-        let laVariable;
+        // La variable qui va contenir l'order id envoyé par le back
+        let backOrderId;
 
+        // Fetch faisant la méthode POST, on envoie l'objet avec la syntaxe exploité par le LS
         fetch("http://localhost:3000/api/products/order",{
             method : "POST",
             body : JSON.stringify(contactAndProducts),
@@ -234,15 +240,18 @@ form.addEventListener("submit", (e)=>{
         })
             .then((response)=> response.json())
             .then((data) => {
-                console.log(data);
-                laVariable = data.orderId;
-                localStorage.setItem("orderId", JSON.stringify(laVariable));
+
+                // On stocke l'order id retourné
+                backOrderId = data.orderId;
+
+                // On l'envoi dans le LS
+                localStorage.setItem("orderId", JSON.stringify(backOrderId));
+
+                // On redirige l'utilisateur vers la page de confirmation
                 window.location.href = "http://127.0.0.1:5500/front/html/confirmation.html";
             })
     }else{
         alert("Vérifiez les information saisies");
     }
 });
-
-
-
+//*******************************************************************
