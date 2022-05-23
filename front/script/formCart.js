@@ -201,25 +201,44 @@ email.addEventListener("change", function(){
 
 
 
-
-
 form.addEventListener("submit", (e)=>{
     e.preventDefault();
     if(checkFirstName(firstName) && checkLastName(lastName) && checkAdress(adress) && checkCity(city) && checkEmail(email)){
-        console.log("coucou");
-        const userForm = {
-            prenom: firstName.value,
-            nom: lastName.value,
-            adresse: adress.value,
-            ville: city.value,
-            email: email.value
-        };
-        console.log(userForm);
 
-        const contactAndProducts = {
-            userForm,
-            localStorageContains
+        let idProductsTab = [];
+        for(let i = 0; i < localStorageContains.length; i++){
+            idProductsTab.push(localStorageContains[i].id)
+        }
+
+        const userForm = {
+            firstName : firstName.value,
+            lastName : lastName.value,
+            address : adress.value,
+            city : city.value,
+            email : email.value
         };
+        
+        const contactAndProducts = {
+            contact : userForm,
+            products : idProductsTab
+        };
+
+        let laVariable;
+
+        fetch("http://localhost:3000/api/products/order",{
+            method : "POST",
+            body : JSON.stringify(contactAndProducts),
+            headers : {
+                "Content-Type" : "application/json"
+            },
+        })
+            .then((response)=> response.json())
+            .then((data) => {
+                console.log(data);
+                laVariable = data.orderId;
+                localStorage.setItem("orderId", JSON.stringify(laVariable));
+                window.location.href = "http://127.0.0.1:5500/front/html/confirmation.html";
+            })
     }else{
         alert("Vérifiez les information saisies");
     }
