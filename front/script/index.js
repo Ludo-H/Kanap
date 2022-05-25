@@ -30,6 +30,7 @@ async function fetchProducts() {
     await fetch("http://localhost:3000/api/products")
         .then((res) => res.json())
         .then((data) => dataProducts = data)
+        .catch((error) => alert("Cette erreur est survenue : " + error))
     productsDisplay();
 };
 fetchProducts();

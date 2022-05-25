@@ -35,6 +35,7 @@ let calculProductsTotal = 0;
 
 
 //*********************************
+function displayBasket(){
 // On va afficher chaque contenu du LSC en faisant une fetch de sa fiche produit, on pourra donc accéder au prix
 for (let product of localStorageContains){
     // Fetch identique que celle de la page produit seul
@@ -143,7 +144,10 @@ for (let product of localStorageContains){
             let totalPrice = document.getElementById("totalPrice");
             totalPrice.textContent = calculPriceTotal;
         })
+        .catch((error) => alert("Cette erreur est survenue : " + error))
 };
+};
+displayBasket();
 //*********************************
 
 

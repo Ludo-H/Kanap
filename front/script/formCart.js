@@ -20,7 +20,7 @@ let firstNameRegex  = new RegExp(/^[A-Za-zéèê]{3,20}$/);
 //*********************************
 let lastName        = document.getElementById("lastName"); 
 let errorLastName   = document.getElementById("lastNameErrorMsg");
-let lastNameRegex   = new RegExp(/^[A-Za-z]{3,20}$/);
+let lastNameRegex   = new RegExp(/^[A-Za-zéèê]{3,20}$/);
 //*********************************
 
 
@@ -29,7 +29,7 @@ let lastNameRegex   = new RegExp(/^[A-Za-z]{3,20}$/);
 //*********************************
 let adress          = document.getElementById("address");
 let errorAdress     = document.getElementById("addressErrorMsg");
-let adressRegex     = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
+let adressRegex     = new RegExp(/^[a-zA-Z0-9\s,.éèê'-]{3,}$/);
 //*********************************
 
 
@@ -244,12 +244,10 @@ form.addEventListener("submit", ()=>{
                 // On stocke l'order id retourné
                 backOrderId = data.orderId;
 
-                // On l'envoi dans le LS
-                localStorage.setItem("orderId", JSON.stringify(backOrderId));
-
                 // On redirige l'utilisateur vers la page de confirmation
-                window.location.href = "http://127.0.0.1:5500/front/html/confirmation.html";
+                window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?commande=${backOrderId}`;
             })
+            .catch((error) => alert("Cette erreur est survenue : " + error))
     }else{
         alert("Vérifiez les information saisies");
     }
